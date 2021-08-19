@@ -2,10 +2,11 @@ package jwt
 
 import (
 	"errors"
+	"time"
+
 	"github.com/dgrijalva/jwt-go"
 	"github.com/enorith/authenticate"
 	"github.com/enorith/supports/str"
-	"time"
 )
 
 type InvalidTokenError string
@@ -13,6 +14,7 @@ type InvalidTokenError string
 func (it InvalidTokenError) Error() string {
 	return string(it)
 }
+
 var (
 	DefaultAlg                = jwt.SigningMethodHS512
 	DefaultExpireSecond int64 = 60 * 30
@@ -24,14 +26,14 @@ type User interface {
 }
 
 type Token struct {
-	AccessToken string     `json:"access_token"`
-	ExpireIn    int64      `json:"expire_in"`
-	Type        string     `json:"type"`
+	AccessToken string        `json:"access_token"`
+	ExpireIn    int64         `json:"expire_in"`
+	Type        string        `json:"type"`
 	claims      jwt.MapClaims `json:"-"`
 }
 
 type TokenProvider interface {
-	GetToken() ([]byte, error)
+	GetAccessToken() ([]byte, error)
 }
 
 type Guard struct {
@@ -80,12 +82,12 @@ func (g *Guard) Check() (authenticate.User, error) {
 	if e != nil {
 		return nil, e
 	}
-	
+
 	idValue := g.token.claims["sub"]
-	id := authenticate.NewUserIdentifier(idValue)
+	id := authenticate.Identifier(idValue)
 
 	g.user, e = g.userProvider.FindUserById(id)
-	
+
 	return g.user, e
 }
 
@@ -130,11 +132,11 @@ func (g *Guard) Auth(user authenticate.User) error {
 }
 
 func (g *Guard) ParseToken() error {
-	ts, e := g.tokenProvider.GetToken()
+	ts, e := g.tokenProvider.GetAccessToken()
 	if e != nil {
 		return e
 	}
-	
+
 	var token Token
 	token.AccessToken = string(ts)
 	t, err := jwt.ParseWithClaims(token.AccessToken, &token.claims, func(token *jwt.Token) (interface{}, error) {

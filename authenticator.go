@@ -5,4 +5,3 @@ type Guard interface {
 	User() User
 	Auth(User) error
 }
-

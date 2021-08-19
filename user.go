@@ -56,10 +56,9 @@ type UserProvider interface {
 	FindUserById(UserIdentifier) (User, error)
 }
 
-func NewUserIdentifier(v interface{}) UserIdentifier {
+func Identifier(v interface{}) UserIdentifier {
 	return UserIdentifier{v}
 }
 
 type Credential interface {
-
 }
