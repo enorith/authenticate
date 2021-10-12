@@ -1,0 +1,4 @@
+github.com/enorith/supports v0.0.12 h1:je3hegQdoNl1GERDMWsQFIkMw1eji7k4zlWuhF9KDLo=
+github.com/enorith/supports v0.0.12/go.mod h1:arD7UoIt8BKSkZINkCQmKQjE1sW1BbJugDc+mKuFtyk=
+github.com/golang-jwt/jwt/v4 v4.1.0 h1:XUgk2Ex5veyVFVeLm0xhusUTQybEbexJXrvPNOKkSY0=
+github.com/golang-jwt/jwt/v4 v4.1.0/go.mod h1:/xlHOz8bRuivTWchD4jCa+NbatV+wEUSzwAxVc6locg=
