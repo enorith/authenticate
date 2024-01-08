@@ -152,10 +152,16 @@ func (g *Guard) ParseToken() error {
 	return nil
 }
 
-func NewJwtGuard(tokenProvider TokenProvider, userProvider authenticate.UserProvider, key []byte) *Guard {
+func NewJwtGuard(tokenProvider TokenProvider, userProvider authenticate.UserProvider, key []byte, expireSecond ...int64) *Guard {
+	var es int64
+	if len(expireSecond) > 0 {
+		es = expireSecond[0]
+	}
+
 	return &Guard{
 		tokenProvider: tokenProvider,
 		userProvider:  userProvider,
 		key:           key,
+		expireSecond:  es,
 	}
 }
